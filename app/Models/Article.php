@@ -9,6 +9,8 @@ class Article extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public static function completed()
     {
         return static::where('completed', 1)->get();
