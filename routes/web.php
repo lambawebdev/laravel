@@ -29,15 +29,21 @@ Route::get('/', function() {
 */
 
 
-/*Route::resource('/articles', 'TasksController');*/
+Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
+    'create' => 'articles.create',
+    'store' => 'articles.create',
+    'show' =>'articles.article',
+    'index' =>'articles',
+]);
 
-Route::get('/articles', 'App\Http\Controllers\ArticlesController@index')->name('articles');
+/*Route::get('/articles', 'App\Http\Controllers\ArticlesController@index')->name('articles');
 Route::get('/articles/create', 'App\Http\Controllers\ArticlesController@create');
 Route::get('/articles/{article}', 'App\Http\Controllers\ArticlesController@show');
 Route::post('/articles', 'App\Http\Controllers\ArticlesController@store')->name('articles');
-Route::get('/articles/{article}/edit','App\Http\Controllers\ArticlesController@edit');
-Route::patch('/articles/{article}', 'App\Http\Controllers\ArticlesController@update');
-Route::delete('/articles/{article}', 'App\Http\Controllers\ArticlesController@destroy');
+Route::get('/articles/{article}/edit','App\Http\Controllers\ArticlesController@edit')->name('articles.edit');
+Route::patch('/articles/{article}', 'App\Http\Controllers\ArticlesController@update')->name('articles.id');
+Route::delete('/articles/{article}', 'App\Http\Controllers\ArticlesController@destroy')->name('articles.article');
+*/
 Route::get('/about', 'App\Http\Controllers\ArticlesController@about');
 Route::get('/contacts', 'App\Http\Controllers\ContactsController@index')->name('contacts');
 Route::post('/contacts', 'App\Http\Controllers\ContactsController@store')->name('contacts');

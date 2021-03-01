@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArticlesFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\FormRequest;
 use function Sodium\compare;
 
 class ArticlesController extends Controller
@@ -26,23 +26,13 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store()
+    public function store(ArticlesFormRequest $request, Article $article)
     {
-        /*$fields = $this->validate(request(), [
-            'slug' => 'required|unique:articles|regex:/^[a-z0-9 .\-]+$/i',
-            'title' => 'required|min:5|max:100',
-            'body' => 'required|max:255'
-        ]);*/
+        $validated = $request->validated();
 
-        $article = new Article();
-
-        $formRequest = new FormRequest();
-
-        $fields = $formRequest->validate($article);
-
-        $article->slug = $fields['slug'];
-        $article->title = $fields['title'];
-        $article->body = $fields['body'];
+        $article->slug = $validated['slug'];
+        $article->title = $validated['title'];
+        $article->body = $validated['body'];
 
         $article->save();
         return redirect(route('articles'));
@@ -53,18 +43,11 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update(Article $article)
+    public function update(ArticlesFormRequest $request, Article $article)
     {
-        /*$fields = $this->validate(request(), [
-            'title' => 'required|min:5|max:100',
-            'body' => 'required|max:255'
-        ]);*/
+        $validated = $request->validated();
+        $article->update($validated);
 
-        $formRequest = new FormRequest();
-
-        $fields = $formRequest->validate($article);
-
-        $article->update($fields);
         Session::flash('notify', 'Запись создана');
         return redirect(route('articles'));
     }

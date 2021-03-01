@@ -13,7 +13,7 @@
 
         @include('layout.success')
 
-        <form method="post" action={{route("articles")}}>
+        <form method="post" action="{{route("articles.create")}}">
 
             @csrf
 
