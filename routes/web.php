@@ -31,7 +31,7 @@ Route::get('/', function() {
 
 Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
     'create' => 'articles.create',
-    'store' => 'articles.create',
+    'store' => 'articles.store',
     'show' =>'articles.article',
     'index' =>'articles',
 ]);

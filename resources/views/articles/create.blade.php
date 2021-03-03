@@ -13,11 +13,11 @@
 
         @include('layout.success')
 
-        <form method="post" action="{{route("articles.create")}}">
+        <form method="post" action="{{route("articles.store")}}">
 
             @csrf
 
-            @include('articles.input')
+            @include('articles.input', ['article' => new App\Models\Article()])
 
             <button type="submit" class="btn btn-primary">Добавить статью</button>
         </form>

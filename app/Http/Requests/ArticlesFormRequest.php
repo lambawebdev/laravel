@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use app\Models\Article;
 
 class ArticlesFormRequest extends FormRequest
 {
@@ -24,9 +25,13 @@ class ArticlesFormRequest extends FormRequest
     public function rules()
     {
 
-        $id = $this->route('article')['id'] ?? 1;
-
-        $slug = 'unique:articles,slug,'.$id.'|regex:/^[a-z0-9 .\-]+$/i';
+        $article = Article::where('slug', '=', $_POST['slug'])->first();
+        if ($article === null) {
+            $slug = 'unique:articles|regex:/^[a-z0-9 .\-]+$/i';
+        } else {
+            $id = $this->route('article')['id'];
+            $slug = 'unique:articles,slug,'.$id.'|regex:/^[a-z0-9 .\-]+$/i';
+        }
 
         return [
             'slug' => $slug,
