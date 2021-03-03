@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArticlesFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use Illuminate\Support\Facades\Session;
 use function Sodium\compare;
 
 class ArticlesController extends Controller
@@ -11,7 +13,6 @@ class ArticlesController extends Controller
     public function index()
     {
         $article = Article::latest()->get();
-
         return view('articles.index', compact('article'));
     }
 
@@ -25,22 +26,35 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store()
+    public function store(ArticlesFormRequest $request, Article $article)
     {
-        $fields = $this->validate(request(), [
-            'slug' => 'required|unique:articles|regex:/^[a-z0-9 .\-]+$/i',
-            'title' => 'required|min:5|max:100',
-            'body' => 'required|max:255'
-        ]);
+        $validated = $request->validated();
 
-        $article = new Article();
-
-        $article->slug = $fields['slug'];
-        $article->title = $fields['title'];
-        $article->body = $fields['body'];
+        $article->slug = $validated['slug'];
+        $article->title = $validated['title'];
+        $article->body = $validated['body'];
 
         $article->save();
+        return redirect(route('articles'));
+    }
 
+    public function edit(Article $article)
+    {
+        return view('articles.edit', compact('article'));
+    }
+
+    public function update(ArticlesFormRequest $request, Article $article)
+    {
+        $validated = $request->validated();
+        $article->update($validated);
+
+        Session::flash('notify', 'Запись создана');
+        return redirect(route('articles'));
+    }
+
+    public function destroy(Article $article)
+    {
+        $article->delete();
         return redirect(route('articles'));
     }
 
