@@ -28,6 +28,7 @@ Route::get('/', function() {
  * DELETE /articles/1 (destroy)
 */
 
+Route::get('/articles/tags/{tag}', 'App\Http\Controllers\TagsController@index');
 
 Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
     'create' => 'articles.create',
@@ -36,15 +37,13 @@ Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
     'index' =>'articles',
 ]);
 
-/*Route::get('/articles', 'App\Http\Controllers\ArticlesController@index')->name('articles');
-Route::get('/articles/create', 'App\Http\Controllers\ArticlesController@create');
-Route::get('/articles/{article}', 'App\Http\Controllers\ArticlesController@show');
-Route::post('/articles', 'App\Http\Controllers\ArticlesController@store')->name('articles');
-Route::get('/articles/{article}/edit','App\Http\Controllers\ArticlesController@edit')->name('articles.edit');
-Route::patch('/articles/{article}', 'App\Http\Controllers\ArticlesController@update')->name('articles.id');
-Route::delete('/articles/{article}', 'App\Http\Controllers\ArticlesController@destroy')->name('articles.article');
-*/
 Route::get('/about', 'App\Http\Controllers\ArticlesController@about');
 Route::get('/contacts', 'App\Http\Controllers\ContactsController@index')->name('contacts');
 Route::post('/contacts', 'App\Http\Controllers\ContactsController@store')->name('contacts');
 Route::get('/admin/feedback', 'App\Http\Controllers\ContactsController@show');
+
+Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsController@store');
+
+Route::post('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@store');
+Route::delete('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@destroy');
+

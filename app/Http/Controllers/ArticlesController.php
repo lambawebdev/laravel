@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticlesFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Session;
+use phpDocumentor\Reflection\Types\Collection;
+use App\Service\TagsSynchronizer;
 use function Sodium\compare;
 
 class ArticlesController extends Controller
 {
     public function index()
     {
-        $article = Article::latest()->get();
+        $article = Article::with('tags')->latest()->get();
         return view('articles.index', compact('article'));
     }
 
@@ -43,10 +46,31 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update(ArticlesFormRequest $request, Article $article)
+    public function update(ArticlesFormRequest $request, Article $article, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
         $article->update($validated);
+
+        /** @var  $articleTags Collection */
+        /*$articleTags = $article->tags->keyBy('name');
+
+        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) { return $item; });
+
+        $tagsToAttach = $tags->diffKeys($articleTags);
+        $tagsToDetach = $articleTags->diffKeys($tags);
+
+        foreach ($tagsToAttach as $tag) {
+            $tag = Tag::firstOrCreate(['name' => $tag]);
+            $article->tags()->attach($tag);
+        }
+
+        foreach ($tagsToDetach as $tag) {
+            $tags->tags()->detach($tag);
+        }*/
+
+        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) { return $item; });
+
+        $tagsSynchronizer->sync($tags, $article);
 
         Session::flash('notify', 'Запись создана');
         return redirect(route('articles'));
