@@ -24,7 +24,6 @@ class ArticlesFormRequest extends FormRequest
      */
     public function rules()
     {
-
         $article = Article::where('slug', '=', $_POST['slug'])->first();
         if ($article === null) {
             $slug = 'unique:articles|regex:/^[a-z0-9 .\-]+$/i';

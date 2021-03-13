@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticlesFormRequest;
+use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Session;
+use phpDocumentor\Reflection\Types\Collection;
+use App\Service\TagsSynchronizer;
 use function Sodium\compare;
 
 class ArticlesController extends Controller
 {
     public function index()
     {
-        $article = Article::latest()->get();
+        $article = Article::with('tags')->latest()->get();
         return view('articles.index', compact('article'));
     }
 
@@ -26,7 +30,7 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(ArticlesFormRequest $request, Article $article)
+    public function store(ArticlesFormRequest $request, TagsRequest $tagsRequest, TagsSynchronizer $tagsSynchronizer, Article $article)
     {
         $validated = $request->validated();
 
@@ -35,6 +39,9 @@ class ArticlesController extends Controller
         $article->body = $validated['body'];
 
         $article->save();
+
+        $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);
+
         return redirect(route('articles'));
     }
 
@@ -43,10 +50,12 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update(ArticlesFormRequest $request, Article $article)
+    public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
         $article->update($validated);
+
+        $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);
 
         Session::flash('notify', 'Запись создана');
         return redirect(route('articles'));

@@ -13,17 +13,28 @@
 
         @include('layout.success')
 
-        <form method="POST" action="{{route("articles.article", $article->id)}}">
+        <form method="POST" action="{{ route("articles.article", $article->id) }}">
 
             @csrf
             @method('PATCH')
 
             @include('articles.input')
 
+            <div class="form-group">
+                <label for="inputTags">Теги</label>
+                <input type="text"
+                       class="form-control"
+                       id="inputTags"
+                       name="tags"
+                       value="{{ old('tags', $article->tags->pluck('name')->implode(',')) }}">
+            </div>
+
+
+
             <button type="submit" class="btn btn-primary">Обновить статью</button>
         </form>
 
-        <form method="POST" action="{{route("articles.article", $article->id)}}">
+        <form method="POST" action="{{ route("articles.article", $article->id) }}">
 
             @csrf
             @method('DELETE')
