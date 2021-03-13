@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticlesFormRequest;
+use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Tag;
@@ -29,7 +30,7 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(ArticlesFormRequest $request, Article $article)
+    public function store(ArticlesFormRequest $request, TagsRequest $tagsRequest, TagsSynchronizer $tagsSynchronizer, Article $article)
     {
         $validated = $request->validated();
 
@@ -38,6 +39,9 @@ class ArticlesController extends Controller
         $article->body = $validated['body'];
 
         $article->save();
+
+        $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);
+
         return redirect(route('articles'));
     }
 
@@ -46,31 +50,12 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update(ArticlesFormRequest $request, Article $article, TagsSynchronizer $tagsSynchronizer)
+    public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
         $article->update($validated);
 
-        /** @var  $articleTags Collection */
-        /*$articleTags = $article->tags->keyBy('name');
-
-        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) { return $item; });
-
-        $tagsToAttach = $tags->diffKeys($articleTags);
-        $tagsToDetach = $articleTags->diffKeys($tags);
-
-        foreach ($tagsToAttach as $tag) {
-            $tag = Tag::firstOrCreate(['name' => $tag]);
-            $article->tags()->attach($tag);
-        }
-
-        foreach ($tagsToDetach as $tag) {
-            $tags->tags()->detach($tag);
-        }*/
-
-        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) { return $item; });
-
-        $tagsSynchronizer->sync($tags, $article);
+        $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);
 
         Session::flash('notify', 'Запись создана');
         return redirect(route('articles'));

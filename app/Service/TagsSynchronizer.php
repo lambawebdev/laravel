@@ -9,6 +9,7 @@ class TagsSynchronizer
 {
     public function sync(Collection $tags, Model $model)
     {
+        /** @var  $articleTags Collection */
         $articleTags = $model->tags->keyBy('name');
 
         $tagsToAttach = $tags->diffKeys($articleTags);
@@ -20,7 +21,7 @@ class TagsSynchronizer
         }
 
         foreach ($tagsToDetach as $tag) {
-            $tags->tags()->detach($tag);
+            $model->tags()->detach($tag);
         }
     }
 }

@@ -28,7 +28,7 @@ Route::get('/', function() {
  * DELETE /articles/1 (destroy)
 */
 
-Route::get('/articles/tags/{tag}', 'App\Http\Controllers\TagsController@index');
+Route::get('/articles/tags/{tag}', 'App\Http\Controllers\TagsController@index')->name('articles.tags');
 
 Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
     'create' => 'articles.create',
