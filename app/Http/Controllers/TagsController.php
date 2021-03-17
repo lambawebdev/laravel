@@ -9,6 +9,7 @@ class TagsController extends Controller
 {
     public function index(Tag $tag)
     {
+
         $article = $tag->articles()->with('tags')->get();
 
         return view('articles.index', compact('article'));

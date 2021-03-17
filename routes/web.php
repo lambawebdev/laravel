@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,11 +14,6 @@ use App\Http\Controllers;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function() {
-    return view('welcome');
-})->name('index');
-
 /**
  * GET /articles (index)
  * GET /articles/create (create)
@@ -40,10 +36,17 @@ Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
 Route::get('/about', 'App\Http\Controllers\ArticlesController@about');
 Route::get('/contacts', 'App\Http\Controllers\ContactsController@index')->name('contacts');
 Route::post('/contacts', 'App\Http\Controllers\ContactsController@store')->name('contacts');
-Route::get('/admin/feedback', 'App\Http\Controllers\ContactsController@show');
+Route::get('/admin/feedback', 'App\Http\Controllers\ContactsController@show')->middleware('auth');
 
 Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsController@store');
 
 Route::post('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@store');
 Route::delete('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@destroy');
 
+
+Auth::routes();
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register');
+Route::get('/password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.request');

@@ -14,14 +14,25 @@ use function Sodium\compare;
 
 class ArticlesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $article = Article::with('tags')->latest()->get();
+        /*$article = Article::where('owner_id', auth()->id())->with('tags')->latest()->get();*/
+        $article = auth()->user()->articles()->with('tags')->latest()->get();
         return view('articles.index', compact('article'));
     }
 
     public function show(Article $article)
     {
+//        if ($article->owner_id !== auth()->id()) {
+//            abort(403);
+//        }
+        $this->authorize('view', $article);
+
         return view('articles.show', compact('article'));
     }
 
@@ -37,6 +48,7 @@ class ArticlesController extends Controller
         $article->slug = $validated['slug'];
         $article->title = $validated['title'];
         $article->body = $validated['body'];
+        $article->owner_id = auth()->id();
 
         $article->save();
 
@@ -47,6 +59,7 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
+        $this->authorize('view', $article);
         return view('articles.edit', compact('article'));
     }
 
