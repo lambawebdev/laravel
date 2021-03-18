@@ -10,6 +10,7 @@ use App\Models\Tag;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Collection;
 use App\Service\TagsSynchronizer;
+use App\Mail\ArticleCreated;
 use function Sodium\compare;
 
 class ArticlesController extends Controller
@@ -23,7 +24,9 @@ class ArticlesController extends Controller
     {
         /*$article = Article::where('owner_id', auth()->id())->with('tags')->latest()->get();*/
         $article = auth()->user()->articles()->with('tags')->latest()->get();
+
         return view('articles.index', compact('article'));
+
     }
 
     public function show(Article $article)
