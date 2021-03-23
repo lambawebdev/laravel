@@ -7,7 +7,6 @@ use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use function PHPUnit\TestFixture\func;
 
 
 class Article extends Model

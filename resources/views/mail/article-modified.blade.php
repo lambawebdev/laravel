@@ -3,7 +3,7 @@
 
 {{ $article->body }}
 
-@component('mail::button', ['url' => '/articles/' . $article->id])
+@component('mail::button', ['url' => route('articles.article', $article->id)])
 Посмотреть статью
 @endcomponent
 
