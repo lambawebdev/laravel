@@ -7,6 +7,7 @@ use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Collection;
 use App\Service\TagsSynchronizer;
@@ -18,6 +19,7 @@ class ArticlesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
     }
 
     public function index()
@@ -34,7 +36,8 @@ class ArticlesController extends Controller
 //        if ($article->owner_id !== auth()->id()) {
 //            abort(403);
 //        }
-        $this->authorize('view', $article);
+
+//        $this->authorize('view', $article);
 
         return view('articles.show', compact('article'));
     }
@@ -62,8 +65,12 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
-        $this->authorize('view', $article);
-        return view('articles.edit', compact('article'));
+        if (auth::user()->roles()->where('name', 'admin')->exists()) {
+            return view('articles.edit', compact('article'));
+        } else {
+            $this->authorize('view', $article);
+            return view('articles.edit', compact('article'));
+        }
     }
 
     public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
@@ -79,6 +86,7 @@ class ArticlesController extends Controller
 
     public function destroy(Article $article)
     {
+        $this->middleware('admin');
         $article->delete();
         return redirect(route('articles'));
     }

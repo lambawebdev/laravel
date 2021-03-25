@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use App\Service;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layout.sidebar', function ($view) {
             $view->with('tagsCloud', \App\Models\Tag::tagsCloud());
+        });
+
+        Blade::if('admin', function () {
+            return auth()->check() && auth()->user()->roles()->where('name', 'admin')->exists();
         });
     }
 }
