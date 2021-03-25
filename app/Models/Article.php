@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\ArticleCreated;
+use App\Events\ArticleModified;
+use App\Events\ArticleDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +14,12 @@ class Article extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $dispatchesEvents = [
+        'created' => ArticleCreated::class,
+        'updated' => ArticleModified::class,
+        'deleted' => ArticleDeleted::class,
+    ];
 
     public static function completed()
     {
@@ -37,5 +46,10 @@ class Article extends Model
     public function addStep($attributes)
     {
         return $this->steps()->create($attributes);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
     }
 }
