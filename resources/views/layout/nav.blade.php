@@ -7,6 +7,7 @@
         <a class="p-2 text-muted" href="/articles">Список статей</a>
         @admin
         <a class="p-2 text-muted" href="/admin/feedback">Админ. раздел</a>
+        <a class="p-2 text-muted" href="/admin/articles">Все статьи</a>
         @endadmin
     </nav>
 </div>

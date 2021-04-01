@@ -30,7 +30,13 @@ class ArticlePolicy
      */
     public function view(User $user, Article $article)
     {
-        return $article->owner_id == $user->id;
+        if ($article->owner_id == $user->id) {
+            return true;
+        } elseif (Article::isAdmin()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -41,7 +47,7 @@ class ArticlePolicy
      */
     public function create(User $user)
     {
-        //
+
     }
 
     /**
@@ -53,7 +59,13 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article)
     {
-        //
+        if ($article->owner_id == $user->id) {
+            return true;
+        } elseif (Article::isAdmin()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -65,7 +77,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        //
+        return $user->roles()->where('name', 'admin')->exists();
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 class Article extends Model
@@ -20,6 +21,11 @@ class Article extends Model
         'updated' => ArticleModified::class,
         'deleted' => ArticleDeleted::class,
     ];
+
+    public static function isAdmin()
+    {
+        return Auth::user()->roles()->where('name','admin')->exists();
+    }
 
     public static function completed()
     {

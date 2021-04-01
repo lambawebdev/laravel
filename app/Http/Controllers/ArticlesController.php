@@ -19,13 +19,12 @@ class ArticlesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-
     }
 
     public function index()
     {
         /*$article = Article::where('owner_id', auth()->id())->with('tags')->latest()->get();*/
-        $article = auth()->user()->articles()->with('tags')->latest()->get();
+        $article = auth()->user()->articles()->with('tags')->where('published','1')->latest()->get();
 
         return view('articles.index', compact('article'));
 
@@ -37,7 +36,7 @@ class ArticlesController extends Controller
 //            abort(403);
 //        }
 
-//        $this->authorize('view', $article);
+        $this->authorize('view', $article);
 
         return view('articles.show', compact('article'));
     }
@@ -55,6 +54,7 @@ class ArticlesController extends Controller
         $article->title = $validated['title'];
         $article->body = $validated['body'];
         $article->owner_id = auth()->id();
+        $article->published = $request->get('published') ?? '0';
 
         $article->save();
 
@@ -65,12 +65,8 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
-        if (auth::user()->roles()->where('name', 'admin')->exists()) {
+            $this->authorize('update', $article);
             return view('articles.edit', compact('article'));
-        } else {
-            $this->authorize('view', $article);
-            return view('articles.edit', compact('article'));
-        }
     }
 
     public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
@@ -86,7 +82,6 @@ class ArticlesController extends Controller
 
     public function destroy(Article $article)
     {
-        $this->middleware('admin');
         $article->delete();
         return redirect(route('articles'));
     }

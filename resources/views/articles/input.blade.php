@@ -10,3 +10,9 @@
     <label for="inputBody">Описание статьи</label>
     <input type="text" class="form-control" id="inputBody" name="body" value="{{old('body', $article->body)}}" placeholder="Введите описание статьи">
 </div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="published" value="1" {{ $article->published ? 'checked' : '' }} id="defaultCheck1">
+    <label class="form-check-label" for="defaultCheck1">
+        Опубликовать
+    </label>
+</div>
