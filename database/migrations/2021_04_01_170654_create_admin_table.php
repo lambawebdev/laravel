@@ -13,15 +13,15 @@ class CreateAdminTable extends Migration
      */
     public function up()
     {
-        DB::table('users')->insert(
+        \App\Models\User::insert(
             array(
                 'name' => 'admin',
                 'email' => 'admin@mail.com',
-                'password' => '11223344',
+                'password' => 11223344,
             )
         );
 
-        DB::table('roles')->insert(
+        \App\Models\Role::insert(
             array(
                 'name' => 'admin',
             )

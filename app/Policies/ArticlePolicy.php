@@ -32,11 +32,11 @@ class ArticlePolicy
     {
         if ($article->owner_id == $user->id) {
             return true;
-        } elseif (Article::isAdmin()) {
-            return true;
-        } else {
-            return false;
         }
+        if (User::isAdmin()) {
+            return true;
+        }
+            return false;
     }
 
     /**
@@ -61,11 +61,10 @@ class ArticlePolicy
     {
         if ($article->owner_id == $user->id) {
             return true;
-        } elseif (Article::isAdmin()) {
+        } if (User::isAdmin()) {
             return true;
-        } else {
-            return false;
         }
+            return false;
     }
 
     /**
@@ -77,7 +76,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        return $user->roles()->where('name', 'admin')->exists();
+        return User::isAdmin();
     }
 
     /**

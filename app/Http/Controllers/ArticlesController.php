@@ -54,7 +54,7 @@ class ArticlesController extends Controller
         $article->title = $validated['title'];
         $article->body = $validated['body'];
         $article->owner_id = auth()->id();
-        $article->published = $request->get('published') ?? '0';
+        $article->published = $request->has('published');
 
         $article->save();
 

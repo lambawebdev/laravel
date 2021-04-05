@@ -22,11 +22,6 @@ class Article extends Model
         'deleted' => ArticleDeleted::class,
     ];
 
-    public static function isAdmin()
-    {
-        return Auth::user()->roles()->where('name','admin')->exists();
-    }
-
     public static function completed()
     {
         return static::where('completed', 1)->get();
