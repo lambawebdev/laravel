@@ -72,6 +72,7 @@ class ArticlesController extends Controller
     public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
+        $article->published = $request->has('published');
         $article->update($validated);
 
         $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);

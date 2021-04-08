@@ -17,7 +17,7 @@ class CreateAdminTable extends Migration
             array(
                 'name' => 'admin',
                 'email' => 'admin@mail.com',
-                'password' => 11223344,
+                'password' => Hash::make(11223344),
             )
         );
 
