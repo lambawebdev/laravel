@@ -7,6 +7,7 @@ use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Collection;
 use App\Service\TagsSynchronizer;
@@ -23,7 +24,7 @@ class ArticlesController extends Controller
     public function index()
     {
         /*$article = Article::where('owner_id', auth()->id())->with('tags')->latest()->get();*/
-        $article = auth()->user()->articles()->with('tags')->latest()->get();
+        $article = auth()->user()->articles()->with('tags')->where('published','1')->latest()->get();
 
         return view('articles.index', compact('article'));
 
@@ -34,6 +35,7 @@ class ArticlesController extends Controller
 //        if ($article->owner_id !== auth()->id()) {
 //            abort(403);
 //        }
+
         $this->authorize('view', $article);
 
         return view('articles.show', compact('article'));
@@ -52,6 +54,7 @@ class ArticlesController extends Controller
         $article->title = $validated['title'];
         $article->body = $validated['body'];
         $article->owner_id = auth()->id();
+        $article->published = $request->has('published');
 
         $article->save();
 
@@ -62,13 +65,14 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
-        $this->authorize('view', $article);
-        return view('articles.edit', compact('article'));
+            $this->authorize('update', $article);
+            return view('articles.edit', compact('article'));
     }
 
     public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
+        $article->published = $request->has('published');
         $article->update($validated);
 
         $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);

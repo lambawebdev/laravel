@@ -36,7 +36,9 @@ Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
 Route::get('/about', 'App\Http\Controllers\ArticlesController@about');
 Route::get('/contacts', 'App\Http\Controllers\ContactsController@index')->name('contacts');
 Route::post('/contacts', 'App\Http\Controllers\ContactsController@store')->name('contacts');
-Route::get('/admin/feedback', 'App\Http\Controllers\ContactsController@show')->middleware('auth');
+Route::get('/admin/feedback', 'App\Http\Controllers\ContactsController@show')->name('admin.feedback')->middleware('auth');
+Route::get('/admin/articles', 'App\Http\Controllers\ContactsController@articles')->name('admin.articles')->middleware('auth');
+
 
 Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsController@store');
 

@@ -36,4 +36,11 @@ class ContactsController extends Controller
 
         return view('contacts.feedback', compact('feedback'));
     }
+
+    public function articles()
+    {
+        $article = auth()->user()->articles()->with('tags')->latest()->get();
+
+        return view('articles.index', compact('article'));
+    }
 }

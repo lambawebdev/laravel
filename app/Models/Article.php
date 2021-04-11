@@ -7,6 +7,7 @@ use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 class Article extends Model
