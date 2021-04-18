@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,15 +16,8 @@ class ArticleTagSeeder extends Seeder
      */
     public function run()
     {
-            DB::table('article_tag')->insert([
-                [
-                    'article_id' => mt_rand(0, 10),
-                    'tag_id' => mt_rand(0, 10),
-                ],
-                [
-                    'article_id' => mt_rand(0, 10),
-                    'tag_id' => mt_rand(0, 10),
-                ],
-            ]);
+
+
+
     }
 }

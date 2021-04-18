@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsersTableSeeder::class,
-            TagsSeeder::class,
+//            TagsSeeder::class,
             ArticlesForFirstUserSeeder::class,
             ArticlesForSecondUserSeeder::class,
-            ArticleTagSeeder::class,
+//            ArticleTagSeeder::class,
         ]);
     }
 }

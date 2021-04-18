@@ -25,7 +25,7 @@ class ArticleFactory extends Factory
             'slug' => $this->faker->unique()->word,
             'title' => $this->faker->title,
             'body' => $this->faker->sentence,
-            'owner_id' => '1'
+            'owner_id' => \App\Models\User::factory(),
         ];
     }
 }
