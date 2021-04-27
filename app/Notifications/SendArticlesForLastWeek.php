@@ -7,21 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SendArticles extends Notification
+class SendArticlesForLastWeek extends Notification
 {
     use Queueable;
+
+    public $data;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-
-    public $data;
-
     public function __construct($data)
     {
-        $this->data= $data;
+        $this->data = $data;
     }
 
     /**
@@ -43,18 +42,14 @@ class SendArticles extends Notification
      */
     public function toMail($notifiable)
     {
-        $message = new MailMessage;
+        $message = new MailMessage();
 
-        $message->subject('Статьи за указанный период:');
+        $message->subject('Статьи за последнюю неделю:');
         foreach ($this->data as $article) {
             $message->line(route('articles.article', $article['id']));
         };
 
         return $message;
-//            ->subject('Статьи за указанный период:');
-//                    ->line('The introduction to the notification.')
-//                    ->action('Notification Action', url('/'))
-//                    ->line('Thank you for using our application!');
     }
 
     /**

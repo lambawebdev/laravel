@@ -2,27 +2,28 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Article;
 use App\Models\User;
-use Illuminate\Support\Facades\Notification;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
 use App\Notifications;
+use Illuminate\Support\Facades\Notification;
 
-class newArticlesNotification extends Command
+class sendArticlesForLastWeek extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sendArticles {startDate} {endDate}';
+    protected $signature = 'sendArticlesForLastWeek';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Рассылает статьи всем пользователям за указанный в аргументах период';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -41,11 +42,15 @@ class newArticlesNotification extends Command
      */
     public function handle(Article $article)
     {
-        $data = $article::whereBetween('created_at', [$this->argument('startDate'), $this->argument('endDate')])->get();
+        $currentDate = Carbon::now();
+        $agoDate = $currentDate->subDays($currentDate->dayOfWeek)->subWeek();
+
+        $data = $article::whereBetween('created_at', [$currentDate, $agoDate])->get();
 
         $users = User::all();
 
+        Notification::send($users, new Notifications\SendArticlesForLastWeek($data));
 
-        Notification::send($users, new Notifications\SendArticles($data));
+
     }
 }

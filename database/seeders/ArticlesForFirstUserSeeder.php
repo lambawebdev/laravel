@@ -25,5 +25,8 @@ class ArticlesForFirstUserSeeder extends Seeder
             ->has(Tag::factory()->count(1))
             ->count(10)
             ->create(['owner_id' => \App\Models\User::first()]);
+
+        Article::first()->tags()->attach(Tag::skip(1)->first());
+        Article::skip(1)->first()->tags()->attach(Tag::first());
     }
 }
