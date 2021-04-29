@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Collection;
 use App\Service\TagsSynchronizer;
+use App\Service\PushallService;
 use App\Mail\ArticleCreated;
 use function Sodium\compare;
 
@@ -46,7 +47,7 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(ArticlesFormRequest $request, TagsRequest $tagsRequest, TagsSynchronizer $tagsSynchronizer, Article $article)
+    public function store(ArticlesFormRequest $request, TagsRequest $tagsRequest, TagsSynchronizer $tagsSynchronizer, Article $article, PushallService $pushall)
     {
         $validated = $request->validated();
 
@@ -59,6 +60,8 @@ class ArticlesController extends Controller
         $article->save();
 
         $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);
+
+       $pushall->pushAll($validated['title']);
 
         return redirect(route('articles'));
     }
