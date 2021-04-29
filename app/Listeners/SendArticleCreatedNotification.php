@@ -26,8 +26,8 @@ class SendArticleCreatedNotification
      */
     public function handle(ArticleCreated $event)
     {
-        \Mail::to($event->article->owner->email)->send(
-            new \App\Mail\ArticleCreated($event->article)
-        );
+//        \Mail::to($event->article->owner->email)->send(
+//            new \App\Mail\ArticleCreated($event->article)
+//        );
     }
 }
