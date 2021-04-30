@@ -4,18 +4,25 @@ namespace App\Service;
 
 class PushallService
 {
-    public function __construct()
+    private $id;
+    private $apiKey;
+
+    protected $url = "https://pushall.ru/api.php";
+
+    public function __construct($id, $apiKey)
     {
+        $this->id = $id;
+        $this->apiKey = $apiKey;
     }
 
     public function pushAll($articleTitle)
     {
         curl_setopt_array($ch = curl_init(), array(
-            CURLOPT_URL => "https://pushall.ru/api.php",
+            CURLOPT_URL => $this->url,
             CURLOPT_POSTFIELDS => array(
                 "type" => "self",
-                "id" => "107458",
-                "key" => "4b0bb4146ff997549bb6f2c39bf804a3",
+                "id" => $this->id,
+                "key" => $this->apiKey,
                 "text" => "Создана статья!",
                 "title" => $articleTitle
             ),
