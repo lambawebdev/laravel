@@ -50,7 +50,5 @@ class sendArticlesForLastWeek extends Command
         $users = User::all();
 
         Notification::send($users, new Notifications\SendArticlesForLastWeek($data));
-
-
     }
 }
