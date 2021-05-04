@@ -53,4 +53,20 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->orderBy('created_at', 'DESC');
+    }
+
+    public function addComment($attributes)
+    {
+        $this->comments()->create($attributes);
+    }
+
+    public function history()
+    {
+        return $this->hasMany(ArticleHistory::class)->orderBy('created_at', 'DESC');;
+    }
+
 }

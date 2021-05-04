@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticlesFormRequest;
 use App\Http\Requests\TagsRequest;
+use App\Models\ArticleHistory;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Tag;
@@ -72,10 +73,19 @@ class ArticlesController extends Controller
             return view('articles.edit', compact('article'));
     }
 
-    public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
+    public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer, ArticleHistory $articleHistory)
     {
         $validated = $request->validated();
         $article->published = $request->has('published');
+
+        $articleHistory->article_id = $article->id;
+        $articleHistory->title_before = $article->title;
+        $articleHistory->body_before = $article->body;
+        $articleHistory->title_after = $validated['title'];
+        $articleHistory->body_after = $validated['body'];
+        $articleHistory->user_id = Auth::id();
+        $articleHistory->save();
+
         $article->update($validated);
 
         $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);

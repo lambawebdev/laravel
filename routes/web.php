@@ -45,6 +45,9 @@ Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsContr
 Route::post('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@store');
 Route::delete('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@destroy');
 
+Route::post('/articles/{article}/comments', 'App\Http\Controllers\ArticleCommentsController@store');
+
+
 
 Auth::routes();
 

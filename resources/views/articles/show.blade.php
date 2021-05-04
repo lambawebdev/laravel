@@ -14,7 +14,7 @@
 
         {{ $article->body }}
 
-        @if ($article->steps->isNotEmpty())
+        {{--@if ($article->steps->isNotEmpty())
             <ul class="list-group">
                 @foreach($article->steps as $step)
                     <li class="list-group-item">
@@ -53,13 +53,59 @@
                 >
             </div>
             <button type="submit" class="btn btn-primary">Добавить</button>
-
-
-
         </form>
 
-        @include('layout.errors')
+        @include('layout.errors')--}}
 
+        <hr>
+        @if ($article->history->isNotEmpty())
+            <span>Изменения статьи:</span>
+            @foreach($article->history as $item)
+                <p>
+                    <span>Заголовок до: {{ $item->title_before }}</span>
+                    <br>
+                    <span>Заголовок после: {{ $item->title_after }}</span>
+                    <br>
+                    <span>Описание до: {{ $item->body_before }}</span>
+                    <br>
+                    <span>Описание после: {{ $item->body_after }}</span>
+                    <br>
+                    <span>Дата изменения: {{ $item->created_at }}</span>
+                    <br>
+                    <span>Автор изменений: {{ App\Models\User::where('id', $item->user_id)->first('name')->name }}</span>
+                </p>
+            @endforeach
+        @else
+       <span>Изменений не было</span>
+        @endif
+        <hr>
+        <span>Добавить комментарий:</span>
+        <form method="post" action="/articles/{{ $article->id }}/comments">
+            @csrf
+            <div class="form-group">
+                <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Введите комментарий"
+                        value="{{ old('description') }}"
+                        name="description"
+                >
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+        <span>Список комментариев:</span>
+        @include('layout.errors')
+        @if ($article->comments->isNotEmpty())
+            <ul class="list-group">
+            @foreach($article->comments as $comment)
+                <li class="list-group-item">
+                    {{ $comment->description }}
+                    <p><span>Создан:</span>{{ $comment->created_at->diffForHumans() }}</p>
+                    <p><span>Автор:</span> {{ $article->owner->name }}</p>
+                </li>
+            @endforeach
+            </ul>
+        @endif
         <hr>
         <a href="{{route('articles')}}">Вернутся к списку статей</a>
 
