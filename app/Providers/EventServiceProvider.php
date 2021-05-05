@@ -8,6 +8,8 @@ use App\Listeners\SendArticleDeletedNotification;
 use App\Events\ArticleCreated;
 use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
+use App\Events\ArticleUpdated;
+use App\Listeners\UpdateArticleHistory;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -32,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ArticleDeleted::class => [
             SendArticleDeletedNotification::class,
+        ],
+        ArticleUpdated::class => [
+            UpdateArticleHistory::class,
         ],
 
     ];

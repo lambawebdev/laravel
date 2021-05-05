@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\ArticleCreated;
 use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
+use App\Events\ArticleUpdated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -56,7 +57,7 @@ class Article extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class)->orderBy('created_at', 'DESC');
+        return $this->hasMany(Comment::class)->latest();
     }
 
     public function addComment($attributes)
@@ -66,7 +67,7 @@ class Article extends Model
 
     public function history()
     {
-        return $this->hasMany(ArticleHistory::class)->orderBy('created_at', 'DESC');;
+        return $this->hasMany(ArticleHistory::class)->latest();
     }
 
 }

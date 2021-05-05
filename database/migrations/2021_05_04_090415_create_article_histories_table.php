@@ -15,10 +15,11 @@ class CreateArticleHistoriesTable extends Migration
     {
         Schema::create('article_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('title_before');
+            $table->json('article_changes')->nullable();
+/*            $table->string('title_before');
             $table->string('body_before');
             $table->string('title_after');
-            $table->string('body_after');
+            $table->string('body_after');*/
             $table->integer('article_id');
             $table->unsignedInteger('user_id');
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');

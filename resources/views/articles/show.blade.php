@@ -62,13 +62,13 @@
             <span>Изменения статьи:</span>
             @foreach($article->history as $item)
                 <p>
-                    <span>Заголовок до: {{ $item->title_before }}</span>
+                    <span>Заголовок до: {{ json_decode($item->article_changes)->title_before}}</span>
                     <br>
-                    <span>Заголовок после: {{ $item->title_after }}</span>
+                    <span>Заголовок после: {{ json_decode($item->article_changes)->title_after}}</span>
                     <br>
-                    <span>Описание до: {{ $item->body_before }}</span>
+                    <span>Описание до: {{ json_decode($item->article_changes)->body_before }}</span>
                     <br>
-                    <span>Описание после: {{ $item->body_after }}</span>
+                    <span>Описание после: {{ json_decode($item->article_changes)->body_after}}</span>
                     <br>
                     <span>Дата изменения: {{ $item->created_at }}</span>
                     <br>
@@ -80,7 +80,7 @@
         @endif
         <hr>
         <span>Добавить комментарий:</span>
-        <form method="post" action="/articles/{{ $article->id }}/comments">
+        <form method="post" action="{{ route('article.comments', $article->id) }}">
             @csrf
             <div class="form-group">
                 <input

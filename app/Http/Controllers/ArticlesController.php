@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ArticleUpdated;
 use App\Http\Requests\ArticlesFormRequest;
 use App\Http\Requests\TagsRequest;
 use App\Models\ArticleHistory;
@@ -78,13 +79,7 @@ class ArticlesController extends Controller
         $validated = $request->validated();
         $article->published = $request->has('published');
 
-        $articleHistory->article_id = $article->id;
-        $articleHistory->title_before = $article->title;
-        $articleHistory->body_before = $article->body;
-        $articleHistory->title_after = $validated['title'];
-        $articleHistory->body_after = $validated['body'];
-        $articleHistory->user_id = Auth::id();
-        $articleHistory->save();
+        event(new ArticleUpdated($article, $articleHistory));
 
         $article->update($validated);
 
