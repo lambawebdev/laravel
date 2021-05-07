@@ -74,12 +74,10 @@ class ArticlesController extends Controller
             return view('articles.edit', compact('article'));
     }
 
-    public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer, ArticleHistory $articleHistory)
+    public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
         $article->published = $request->has('published');
-
-        event(new ArticleUpdated($article, $articleHistory));
 
         $article->update($validated);
 

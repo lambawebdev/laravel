@@ -62,13 +62,9 @@
             <span>Изменения статьи:</span>
             @foreach($article->history as $item)
                 <p>
-                    <span>Заголовок до: {{ json_decode($item->article_changes)->title_before}}</span>
+                    <span>Заголовок: {{ $item->article_changes['title'] ?? 'Нет изменений'}}</span>
                     <br>
-                    <span>Заголовок после: {{ json_decode($item->article_changes)->title_after}}</span>
-                    <br>
-                    <span>Описание до: {{ json_decode($item->article_changes)->body_before }}</span>
-                    <br>
-                    <span>Описание после: {{ json_decode($item->article_changes)->body_after}}</span>
+                    <span>Описание: {{ $item->article_changes['body'] ?? 'Нет изменений'}}</span>
                     <br>
                     <span>Дата изменения: {{ $item->created_at }}</span>
                     <br>

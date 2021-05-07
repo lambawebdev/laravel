@@ -2,42 +2,40 @@
 
 namespace App\Listeners;
 
-use App\Events\ArticleUpdated;
+use App\Events\ArticleModified;
+use App\Models\ArticleHistory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateArticleHistory
 {
+
+    public $articleHistory;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ArticleHistory $articleHistory)
     {
-        //
+        $this->articleHistory = $articleHistory;
     }
 
     /**
      * Handle the event.
      *
-     * @param  ArticleUpdated  $event
+     * @param  ArticleModified  $event
      * @return void
      */
-    public function handle(ArticleUpdated $event)
+    public function handle(ArticleModified $event)
     {
         $jsonArticle['article_id'] = $event->article->id;
-        $jsonArticle['title_before'] = $event->article->title;
-        $jsonArticle['body_before'] = $event->article->body;
-        $jsonArticle['title_after'] = \request('title');
-        $jsonArticle['body_after'] = \request('body');
 
-        $jsonArticle = json_encode($jsonArticle);
+        $this->articleHistory->article_changes = $event->article->getDirty();
+        $this->articleHistory->article_id = $event->article->id;
+        $this->articleHistory->user_id = Auth::id();
 
-        $event->articleHistory->article_changes = $jsonArticle;
-        $event->articleHistory->article_id = $event->article->id;
-        $event->articleHistory->user_id = Auth::id();
-        $event->articleHistory->save();
+        $this->articleHistory->save();
     }
 }

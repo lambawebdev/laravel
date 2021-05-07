@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Article;
+use App\Models\ArticleHistory;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Events\ArticleCreated;
 use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
-use App\Events\ArticleUpdated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;

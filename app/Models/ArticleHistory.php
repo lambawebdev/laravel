@@ -9,6 +9,11 @@ class ArticleHistory extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'article_changes' => 'array',
+    ];
+
+
     public function article()
     {
         return $this->belongsTo(Article::class);
