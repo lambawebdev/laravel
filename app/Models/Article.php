@@ -53,4 +53,20 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function addComment($attributes)
+    {
+        $this->comments()->create($attributes);
+    }
+
+    public function history()
+    {
+        return $this->hasMany(ArticleHistory::class)->latest();
+    }
+
 }

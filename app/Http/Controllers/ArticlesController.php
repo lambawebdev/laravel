@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ArticleUpdated;
 use App\Http\Requests\ArticlesFormRequest;
 use App\Http\Requests\TagsRequest;
+use App\Models\ArticleHistory;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Tag;
@@ -76,6 +78,7 @@ class ArticlesController extends Controller
     {
         $validated = $request->validated();
         $article->published = $request->has('published');
+
         $article->update($validated);
 
         $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);
