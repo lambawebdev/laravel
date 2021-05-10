@@ -5,6 +5,7 @@
         <a class="p-2 text-muted" href="/contacts">Контакты</a>
         <a class="p-2 text-muted" href="/articles/create">Создать статью</a>
         <a class="p-2 text-muted" href="/articles">Список статей</a>
+        <a class="p-2 text-muted" href="{{ route('news') }}">Список новостей</a>
         @admin
         <a class="p-2 text-muted" href="{{ route('admin.feedback') }}">Админ. раздел</a>
         <a class="p-2 text-muted" href="{{ route('admin.articles') }}">Все статьи</a>

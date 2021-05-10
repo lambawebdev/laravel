@@ -38,14 +38,21 @@ Route::get('/contacts', 'App\Http\Controllers\ContactsController@index')->name('
 Route::post('/contacts', 'App\Http\Controllers\ContactsController@store')->name('contacts');
 Route::get('/admin/feedback', 'App\Http\Controllers\ContactsController@show')->name('admin.feedback')->middleware('auth');
 Route::get('/admin/articles', 'App\Http\Controllers\ContactsController@articles')->name('admin.articles')->middleware('auth');
+Route::get('/admin/news', 'App\Http\Controllers\ContactsController@news')->name('admin.news')->middleware('auth');
 
+Route::post('/articles/{article}/comments', 'App\Http\Controllers\ArticleCommentsController@store')->name('article.comments');
 
 Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsController@store');
-
 Route::post('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@store');
 Route::delete('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@destroy');
 
-Route::post('/articles/{article}/comments', 'App\Http\Controllers\ArticleCommentsController@store')->name('article.comments');
+Route::get('/news', 'App\Http\Controllers\NewsController@index')->name('news');
+Route::get('/news/{news}', 'App\Http\Controllers\NewsController@show')->name('news.news');
+Route::get('/news/{news}/edit', 'App\Http\Controllers\NewsController@edit')->name('news.edit');
+Route::patch('/news/{news}', 'App\Http\Controllers\NewsController@update')->name('news.update');
+Route::delete('/news/{news}', 'App\Http\Controllers\NewsController@destroy')->name('news.delete');
+
+
 
 
 

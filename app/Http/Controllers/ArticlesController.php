@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ArticleUpdated;
 use App\Http\Requests\ArticlesFormRequest;
 use App\Http\Requests\TagsRequest;
 use App\Models\ArticleHistory;
@@ -27,9 +26,10 @@ class ArticlesController extends Controller
     public function index()
     {
         /*$article = Article::where('owner_id', auth()->id())->with('tags')->latest()->get();*/
-        $article = auth()->user()->articles()->with('tags')->where('published','1')->latest()->get();
+        $articles = auth()->user()->articles()->with('tags')->where('published','1')->latest()->paginate(10);
 
-        return view('articles.index', compact('article'));
+
+        return view('articles.index', compact('articles'));
 
     }
 
@@ -77,7 +77,7 @@ class ArticlesController extends Controller
     public function update(ArticlesFormRequest $request, TagsRequest $tagsRequest,Article $article, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
-        $article->published = $request->has('published');
+        $article->published = (int)$request->has('published');
 
         $article->update($validated);
 

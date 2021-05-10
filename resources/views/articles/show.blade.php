@@ -66,6 +66,10 @@
                     <br>
                     <span>Описание: {{ $item->article_changes['body'] ?? 'Нет изменений'}}</span>
                     <br>
+                    <span>
+                    {{ ($item->article_changes['published'] ?? '') ? 'Статья опубликована' : 'Статья снята с публикации'}}
+                    </span>
+                    <br>
                     <span>Дата изменения: {{ $item->created_at }}</span>
                     <br>
                     <span>Автор изменений: {{ App\Models\User::where('id', $item->user_id)->first('name')->name }}</span>
