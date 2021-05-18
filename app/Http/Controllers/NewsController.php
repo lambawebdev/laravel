@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewsFormRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Models\News;
@@ -26,31 +27,19 @@ class NewsController extends Controller
         return view('news.show', compact('news'));
     }
 
-    public function edit(News $news)
+    public function create()
     {
-        $this->authorize('update', $news);
-
-        return view('news.edit', compact('news'));
+        return view('news.create');
     }
 
-    public function update(News $news)
+    public function store(NewsFormRequest $request, News $news)
     {
-        $this->authorize('update', $news);
+        $validated = $request->validated();
 
-        $news->update([
-            'title' => \request('title'),
-            'body' => \request('body'),
-        ]);
+        $news->title = $validated['title'];
+        $news->body = $validated['body'];
 
-        Session::flash('notify', 'Новость обновлена');
-        return redirect(route('news'));
-    }
-
-    public function destroy(News $news)
-    {
-
-        $this->authorize('delete', $news);
-        $news->delete();
+        $news->save();
 
         return redirect(route('news'));
     }

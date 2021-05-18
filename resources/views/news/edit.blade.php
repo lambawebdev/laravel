@@ -13,7 +13,7 @@
 
         @include('layout.success')
 
-        <form method="POST" action="{{ route('news.update', $news->id) }}">
+        <form method="POST" action="{{ route('admin.news.update', $news->id) }}">
 
             @csrf
             @method('PATCH')
@@ -31,7 +31,7 @@
             <button type="submit" class="btn btn-primary">Обновить новость</button>
         </form>
 
-        <form method="POST" action="{{ route('news.delete', $news->id) }}">
+        <form method="POST" action="{{ route('admin.news.delete', $news->id) }}">
 
             @csrf
             @method('DELETE')

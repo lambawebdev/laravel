@@ -13,7 +13,7 @@
 
         <hr>
         @admin
-        <a href="{{route('news.edit', $news->id)}}">Редактировать новость</a>
+        <a href="{{route('admin.news.edit', $news->id)}}">Редактировать новость</a>
         @endadmin
 
         <hr>

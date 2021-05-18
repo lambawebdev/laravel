@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewsFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
 use Illuminate\Support\Facades\Session;
@@ -51,6 +52,33 @@ class ContactsController extends Controller
         $news = $news->latest()->paginate(20);
 
         return view('news.index', compact('news'));
+    }
+
+    public function newsEdit(News $news)
+    {
+        $this->authorize('update', $news);
+
+        return view('news.edit', compact('news'));
+    }
+
+    public function newsUpdate(News $news, NewsFormRequest $request)
+    {
+        $this->authorize('update', $news);
+
+        $validated = $request->validated();
+
+        $news->update($validated);
+
+        Session::flash('notify', 'Новость обновлена');
+        return redirect(route('news'));
+    }
+
+    public function newsDestroy(News $news)
+    {
+        $this->authorize('delete', $news);
+        $news->delete();
+
+        return redirect(route('news'));
     }
 
 }
