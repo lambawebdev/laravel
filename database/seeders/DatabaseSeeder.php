@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ArticlesForFirstUserSeeder::class,
             ArticlesForSecondUserSeeder::class,
 //            ArticleTagSeeder::class,
+            NewsSeeder::class,
         ]);
     }
 }

@@ -33,21 +33,26 @@ Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
     'index' =>'articles',
 ]);
 
-Route::get('/about', 'App\Http\Controllers\ArticlesController@about');
+Route::get('/about', 'App\Http\Controllers\ArticlesController@about')->name('about');
 Route::get('/contacts', 'App\Http\Controllers\ContactsController@index')->name('contacts');
 Route::post('/contacts', 'App\Http\Controllers\ContactsController@store')->name('contacts');
 Route::get('/admin/feedback', 'App\Http\Controllers\ContactsController@show')->name('admin.feedback')->middleware('auth');
 Route::get('/admin/articles', 'App\Http\Controllers\ContactsController@articles')->name('admin.articles')->middleware('auth');
-
-
-Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsController@store');
-
-Route::post('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@store');
-Route::delete('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@destroy');
+Route::get('/admin/news', 'App\Http\Controllers\ContactsController@news')->name('admin.news')->middleware('auth');
+Route::get('/admin/news/{news}/edit', 'App\Http\Controllers\ContactsController@newsEdit')->name('admin.news.edit');
+Route::patch('/admin/news/{news}', 'App\Http\Controllers\ContactsController@newsUpdate')->name('admin.news.update');
+Route::delete('/admin/news/{news}', 'App\Http\Controllers\ContactsController@newsDestroy')->name('admin.news.delete');
 
 Route::post('/articles/{article}/comments', 'App\Http\Controllers\ArticleCommentsController@store')->name('article.comments');
 
+Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsController@store');
+Route::post('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@store');
+Route::delete('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@destroy');
 
+Route::get('/news', 'App\Http\Controllers\NewsController@index')->name('news');
+Route::get('/news/create', 'App\Http\Controllers\NewsController@create')->name('news.create');
+Route::get('/news/{news}', 'App\Http\Controllers\NewsController@show')->name('news.news');
+Route::post('/news/store', 'App\Http\Controllers\NewsController@store')->name('news.store');
 
 Auth::routes();
 

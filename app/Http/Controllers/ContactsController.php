@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewsFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
 use Illuminate\Support\Facades\Session;
+use App\Models\Article;
+use App\Models\News;
 
 class ContactsController extends Controller
 {
@@ -37,10 +40,45 @@ class ContactsController extends Controller
         return view('contacts.feedback', compact('feedback'));
     }
 
-    public function articles()
+    public function articles(Article $article)
     {
-        $article = auth()->user()->articles()->with('tags')->latest()->get();
+        $articles = $article->with('tags')->latest()->paginate(20);
 
-        return view('articles.index', compact('article'));
+        return view('articles.index', compact('articles'));
     }
+
+    public function news(News $news)
+    {
+        $news = $news->latest()->paginate(20);
+
+        return view('news.index', compact('news'));
+    }
+
+    public function newsEdit(News $news)
+    {
+        $this->authorize('update', $news);
+
+        return view('news.edit', compact('news'));
+    }
+
+    public function newsUpdate(News $news, NewsFormRequest $request)
+    {
+        $this->authorize('update', $news);
+
+        $validated = $request->validated();
+
+        $news->update($validated);
+
+        Session::flash('notify', 'Новость обновлена');
+        return redirect(route('news'));
+    }
+
+    public function newsDestroy(News $news)
+    {
+        $this->authorize('delete', $news);
+        $news->delete();
+
+        return redirect(route('news'));
+    }
+
 }
