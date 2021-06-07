@@ -29,9 +29,9 @@ class NewsController extends Controller
         return view('news.show', compact('news'));
     }
 
-    public function create()
+    public function create(News $news)
     {
-        return view('news.create');
+        return view('news.create', compact('news'));
     }
 
     public function store(NewsFormRequest $request, News $news, TagsRequest $tagsRequest, TagsSynchronizer $tagsSynchronizer)
