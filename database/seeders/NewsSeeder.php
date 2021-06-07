@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 use App\Models\News;
 
@@ -14,6 +15,9 @@ class NewsSeeder extends Seeder
      */
     public function run()
     {
-        News::factory()->count(100)->create();
+        News::factory()
+            ->has(Tag::factory()->count(1))
+            ->count(100)
+            ->create();
     }
 }

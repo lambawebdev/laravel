@@ -9,9 +9,15 @@ class TagsController extends Controller
 {
     public function index(Tag $tag)
     {
+        $articles = $tag->articles()->with('tags')->paginate(10);
 
-        $article = $tag->articles()->with('tags')->get();
+        return view('articles.index', compact('articles'));
+    }
 
-        return view('articles.index', compact('article'));
+    public function news(Tag $tag)
+    {
+        $news = $tag->news()->with('tags')->paginate(10);
+
+        return view('news.index', compact('news'));
     }
 }

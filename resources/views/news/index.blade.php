@@ -14,6 +14,8 @@
                 <h2 class="blog-post-title"><a href="{{ route('news.news', $item->id) }}">{{ $item->title }}</a></h2>
                 <p class="blog-post-meta">{{ $item->created_at }}</p>
 
+                @include('news.tags', ['tags' => $item->tags])
+
                 {{ $item->body }}
 
             </div><!-- /.blog-post -->

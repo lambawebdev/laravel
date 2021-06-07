@@ -24,7 +24,12 @@ use Illuminate\Support\Facades\Auth;
  * DELETE /articles/1 (destroy)
 */
 
+Route::get('/statistics', 'App\Http\Controllers\StatisticsController@index')->name('statistics');
+
+
 Route::get('/articles/tags/{tag}', 'App\Http\Controllers\TagsController@index')->name('articles.tags');
+Route::get('/news/tags/{tag}', 'App\Http\Controllers\TagsController@news')->name('news.tags');
+
 
 Route::resource('/articles', 'App\Http\Controllers\ArticlesController')->names([
     'create' => 'articles.create',
@@ -44,6 +49,8 @@ Route::patch('/admin/news/{news}', 'App\Http\Controllers\ContactsController@news
 Route::delete('/admin/news/{news}', 'App\Http\Controllers\ContactsController@newsDestroy')->name('admin.news.delete');
 
 Route::post('/articles/{article}/comments', 'App\Http\Controllers\ArticleCommentsController@store')->name('article.comments');
+Route::post('/news/{news}/comments', 'App\Http\Controllers\NewsCommentsController@store')->name('news.comments');
+
 
 Route::post('/articles/{article}/steps', 'App\Http\Controllers\ArticleStepsController@store');
 Route::post('/completed-steps/{step}', 'App\Http\Controllers\CompletedStepsController@store');
