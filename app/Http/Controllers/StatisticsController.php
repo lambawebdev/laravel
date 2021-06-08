@@ -17,11 +17,11 @@ class StatisticsController extends Controller
         $mostArticlesHasUser = User::withCount('articles')->orderBy('articles_count', 'desc')->first();
 
         $longestArticle = Article::select('body')->max('body');
-        $titleLongestArticle = Article::select('title', 'id')->where('body', '=', $longestArticle )->first();
+        $titleLongestArticle = Article::select('title', 'id')->whereRaw('body = (select max(`body`) from articles)')->first();
         $countLongestCharacters = mb_strlen($longestArticle);
 
         $shortestArticle = Article::min('body');
-        $titleShortestArticle = Article::select('title', 'id')->where('body', '=', $shortestArticle )->first();
+        $titleShortestArticle = Article::select('title', 'id')->whereRaw('body = (select min(`body`) from articles)')->first();
         $countShortestCharacters = mb_strlen($shortestArticle);
 
         $avgArticlesInActiveUser = User::withCount('articles')->get()->where('articles_count', '>', '1')->avg('articles_count');
