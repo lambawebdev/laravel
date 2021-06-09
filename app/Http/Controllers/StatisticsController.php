@@ -16,13 +16,8 @@ class StatisticsController extends Controller
         $countNews = News::count();
         $mostArticlesHasUser = User::withCount('articles')->orderBy('articles_count', 'desc')->first();
 
-        $longestArticle = Article::select('body')->max('body');
-        $titleLongestArticle = Article::select('title', 'id')->whereRaw('body = (select max(`body`) from articles)')->first();
-        $countLongestCharacters = mb_strlen($longestArticle);
-
-        $shortestArticle = Article::min('body');
-        $titleShortestArticle = Article::select('title', 'id')->whereRaw('body = (select min(`body`) from articles)')->first();
-        $countShortestCharacters = mb_strlen($shortestArticle);
+        $longestArticle = Article::select('body', 'title', 'id')->orderByRaw('CHAR_LENGTH(body) DESC')->first();
+        $shortestArticle = Article::select('body', 'title', 'id')->orderByRaw('CHAR_LENGTH(body) ASC')->first();
 
         $avgArticlesInActiveUser = User::withCount('articles')->get()->where('articles_count', '>', '1')->avg('articles_count');
         $mostChangableArticle = Article::withCount('history')->orderBy('history_count', 'desc')->first();
@@ -32,12 +27,12 @@ class StatisticsController extends Controller
             'totalArticles' => $countArticles,
             'totalNews' => $countNews,
             'mostArticlesUser' => $mostArticlesHasUser->name,
-            'longestArticleTitle' => $titleLongestArticle->title,
-            'longestArticleId' => $titleLongestArticle->id,
-            'longestArticleLength' => $countLongestCharacters,
-            'shortestArticleTitle' => $titleShortestArticle->title,
-            'shortestArticleId' => $titleShortestArticle->id,
-            'shortestArticleLength' => $countShortestCharacters,
+            'longestArticleTitle' => $longestArticle->title,
+            'longestArticleId' => $longestArticle->id,
+            'longestArticleLength' => mb_strlen($longestArticle->body),
+            'shortestArticleTitle' => $shortestArticle->title,
+            'shortestArticleId' => $shortestArticle->id,
+            'shortestArticleLength' => mb_strlen($shortestArticle->body),
             'avgArticlesInActiveUser' => $avgArticlesInActiveUser,
             'mostChangebleArticleTitle' => $mostChangableArticle->title,
             'mostChangebleArticleId' => $mostChangableArticle->id,
