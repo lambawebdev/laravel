@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NewsFormRequest;
+use App\Http\Requests\TagsRequest;
+use App\Service\TagsSynchronizer;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
 use Illuminate\Support\Facades\Session;
@@ -61,13 +63,15 @@ class ContactsController extends Controller
         return view('news.edit', compact('news'));
     }
 
-    public function newsUpdate(News $news, NewsFormRequest $request)
+    public function newsUpdate(News $news, NewsFormRequest $request, TagsRequest $tagsRequest, TagsSynchronizer $tagsSynchronizer)
     {
         $this->authorize('update', $news);
 
         $validated = $request->validated();
 
         $news->update($validated);
+
+        $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $news);
 
         Session::flash('notify', 'Новость обновлена');
         return redirect(route('news'));

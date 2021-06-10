@@ -27,7 +27,14 @@
                 </textarea>
             </div>
 
-
+            <div class="form-group">
+                <label for="inputTags">Теги</label>
+                <input type="text"
+                       class="form-control"
+                       id="inputTags"
+                       name="tags"
+                       value="{{ old('tags', $news->tags->pluck('name')->implode(',')) }}">
+            </div>
 
             <button type="submit" class="btn btn-primary">Добавить новость</button>
         </form>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NewsFormRequest;
+use App\Http\Requests\TagsRequest;
 use App\Models\Article;
+use App\Service\TagsSynchronizer;
 use Illuminate\Http\Request;
 use App\Models\News;
 use Illuminate\Support\Facades\Session;
@@ -27,12 +29,12 @@ class NewsController extends Controller
         return view('news.show', compact('news'));
     }
 
-    public function create()
+    public function create(News $news)
     {
-        return view('news.create');
+        return view('news.create', compact('news'));
     }
 
-    public function store(NewsFormRequest $request, News $news)
+    public function store(NewsFormRequest $request, News $news, TagsRequest $tagsRequest, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
 
@@ -40,6 +42,8 @@ class NewsController extends Controller
         $news->body = $validated['body'];
 
         $news->save();
+
+        $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $news);
 
         return redirect(route('news'));
     }
