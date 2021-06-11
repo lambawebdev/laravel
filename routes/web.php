@@ -24,10 +24,6 @@ use Illuminate\Support\Facades\Auth;
  * DELETE /articles/1 (destroy)
 */
 
-Route::get('test', function() {
-    \App\Jobs\AdminReport::dispatch(Auth::user());
-});
-
 Route::get('/statistics', 'App\Http\Controllers\StatisticsController@index')->name('statistics');
 
 

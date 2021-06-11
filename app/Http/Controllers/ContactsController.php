@@ -89,7 +89,6 @@ class ContactsController extends Controller
 
     public function report(Request $request)
     {
-
         \App\Jobs\AdminReport::dispatch(Auth::user(), $request->all());
     }
 

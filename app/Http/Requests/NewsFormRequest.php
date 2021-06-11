@@ -25,7 +25,7 @@ class NewsFormRequest extends FormRequest
     {
         return [
             'title' => 'required|min:5|max:100',
-            'body' => 'required|max:255', 
+            'body' => 'required|max:255',
         ];
     }
 }

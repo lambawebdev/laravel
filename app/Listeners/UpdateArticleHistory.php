@@ -35,7 +35,7 @@ class UpdateArticleHistory
         $this->articleHistory->article_changes = $event->article->getDirty();
         $this->articleHistory->article_id = $event->article->id;
         $this->articleHistory->user_id = Auth::id();
-
+        
         $this->articleHistory->save();
     }
 }

@@ -1,18 +1,10 @@
 @component('mail::message')
 Информация по Вашему отчету:
 
-@if(array_key_exists('news', $reportData['request']))
-    {{ 'Новости: ' . $reportData['articles'] }}
-@endif
-@if(array_key_exists('articles', $reportData['request']))
-    {{ 'Статьи: ' . $reportData['news'] }}
-@endif
-@if(array_key_exists('comments', $reportData['request']))
-    {{ 'Комментарии: ' . $reportData['comments'] }}
-@endif
-@if(array_key_exists('tags', $reportData['request']))
-    {{ 'Теги: ' . $reportData['tags']}}
-@endif
+{{  ($reportData['news']) ? 'Новостей: ' . $reportData['news']  : ''}} <br>
+{{  ($reportData['articles']) ? 'Статей: ' . $reportData['articles']  : '' }}<br>
+{{  ($reportData['comments']) ? 'Комментариев: ' . $reportData['comments']  : '' }}<br>
+{{  ($reportData['tags']) ? 'Тегов: ' . $reportData['tags']  : '' }}
 
 @component('mail::button', ['url' => ''])
 Button Text

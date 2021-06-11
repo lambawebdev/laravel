@@ -41,17 +41,31 @@ class AdminReport implements ShouldQueue
      */
     public function handle()
     {
-        $countArticles = Article::count();
-        $countNews = News::count();
-        $countComments = Comment::count();
-        $countTags = Tag::count();
+
+        $request = $this->request;
+
+        if (array_key_exists('news', $request)) {
+            $countNews = News::count();
+        }
+
+        if (array_key_exists('articles', $request)) {
+            $countArticles = Article::count();
+        }
+
+        if (array_key_exists('comments', $request)) {
+            $countComments = Comment::count();
+        }
+
+        if (array_key_exists('tags', $request)) {
+            $countTags = Tag::count();
+        }
 
         $reportData = [
-            'articles' => $countArticles,
-            'news' => $countNews,
-            'comments' => $countComments,
-            'tags' => $countTags,
-            'request' => $this->request
+            'articles' => $countArticles ?? '',
+            'news' => $countNews ?? '',
+            'comments' => $countComments ?? '',
+            'tags' => $countTags ?? '',
+            'request' => $request
         ];
 
         Mail::to($this->user->email)->send(new AdminReportCreated($reportData));
