@@ -24,6 +24,10 @@ use Illuminate\Support\Facades\Auth;
  * DELETE /articles/1 (destroy)
 */
 
+Route::get('test', function () {
+    event(new \App\Events\ArticleModified(App\Models\Article::first()));
+});
+
 Route::get('/statistics', 'App\Http\Controllers\StatisticsController@index')->name('statistics');
 
 

@@ -11,17 +11,6 @@ class ArticlePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
@@ -37,17 +26,6 @@ class ArticlePolicy
             return true;
         }
             return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-
     }
 
     /**
@@ -77,29 +55,5 @@ class ArticlePolicy
     public function delete(User $user, Article $article)
     {
         return User::isAdmin();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Article  $article
-     * @return mixed
-     */
-    public function restore(User $user, Article $article)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Article  $article
-     * @return mixed
-     */
-    public function forceDelete(User $user, Article $article)
-    {
-        //
     }
 }
