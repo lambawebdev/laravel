@@ -10,6 +10,8 @@ use App\Models\Feedback;
 use Illuminate\Support\Facades\Session;
 use App\Models\Article;
 use App\Models\News;
+use Illuminate\Support\Facades\Auth;
+
 
 class ContactsController extends Controller
 {
@@ -83,6 +85,11 @@ class ContactsController extends Controller
         $news->delete();
 
         return redirect(route('news'));
+    }
+
+    public function report(Request $request)
+    {
+        \App\Jobs\AdminReport::dispatch(Auth::user(), $request->all());
     }
 
 }

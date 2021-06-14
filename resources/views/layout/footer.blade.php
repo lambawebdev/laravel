@@ -19,3 +19,8 @@
     text: 'Thumbnail'
   });
 </script>
+<script>
+  $('.form-check').click(function(event){
+    event.stopPropagation();
+  });
+</script>
