@@ -5,6 +5,9 @@
 @section('content')
 
     <div class="col-md-8 blog-main">
+
+        <article-update article-id="{{ $article->id }}"></article-update>
+
         <a href="{{route('articles.edit', $article->id)}}">Изменить</a>
         <h3 class="pb-3 mb-4 font-italic border-bottom">
             {{ $article->title }}

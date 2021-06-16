@@ -1,6 +1,5 @@
 Echo
-  .channel('hello')
+  .channel('hello.' + article.id)
   .listen('ArticleModified', (e) => {
-    alert('тест вэб сокет соединения')
-    console.log('sdfsdf')
+    alert(e.article.id);
   });
