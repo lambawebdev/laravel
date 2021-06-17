@@ -1,5 +1,5 @@
-Echo
-  .channel('hello.' + article.id)
-  .listen('ArticleModified', (e) => {
-    alert(e.article.id);
-  });
+// Echo
+//   .private('articles')
+//   .listen('ArticleModified', (e) => {
+//     alert(e.article.id);
+//   });

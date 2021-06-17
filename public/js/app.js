@@ -1892,8 +1892,9 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    Echo.channel('hello.' + this.articleId).listen('ArticleModified', function (data) {
+    Echo.channel('articles').listen('ArticleModified', function (data) {
       _this.hasUpdate = true;
+      console.log('Статья изменена');
     });
   },
   methods: {
@@ -1971,10 +1972,9 @@ Vue.component('article-update', __webpack_require__(/*! ./components/ArticleUpda
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-var app = new Vue({
-  el: '#app'
-});
+// const app = new Vue({
+//     el: '#app',
+// });
 
 __webpack_require__(/*! ./echo */ "./resources/js/echo.js");
 
@@ -2021,7 +2021,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
   broadcaster: "socket.io",
-  host: window.location.hostname + ":" + 6003
+  host: window.location.hostname + ":" + 6005
 });
 
 /***/ }),
@@ -2032,9 +2032,11 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
   \******************************/
 /***/ (() => {
 
-Echo.channel('hello.' + article.id).listen('ArticleModified', function (e) {
-  alert(e.article.id);
-});
+// Echo
+//   .private('articles')
+//   .listen('ArticleModified', (e) => {
+//     alert(e.article.id);
+//   });
 
 /***/ }),
 

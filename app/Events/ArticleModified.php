@@ -35,6 +35,6 @@ class ArticleModified implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('hello.'.$this->article->id);
+        return new Channel('articles');
     }
 }

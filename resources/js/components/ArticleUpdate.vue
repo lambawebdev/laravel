@@ -15,9 +15,10 @@
       },
       mounted() {
         Echo
-          .channel('hello.' + this.articleId)
+          .channel('articles')
           .listen('ArticleModified', (data) => {
             this.hasUpdate = true;
+            console.log('Статья изменена');
           })
       },
       methods: {
