@@ -6,6 +6,10 @@
 
     <div class="col-md-8 blog-main">
 
+        <div id="app">
+            <article-update></article-update>
+        </div>
+
         <h3 class="pb-3 mb-4 font-italic border-bottom">
             Изменение статьи
         </h3>

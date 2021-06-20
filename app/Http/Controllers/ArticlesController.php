@@ -84,7 +84,9 @@ class ArticlesController extends Controller
         $tagsSynchronizer->sync($tagsRequest->enteredTagsCollection(), $article);
 
         Session::flash('notify', 'Запись создана');
+
         return redirect(route('articles'));
+
     }
 
     public function destroy(Article $article)
