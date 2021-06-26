@@ -33,6 +33,10 @@
     <main role="main" class="container">
         <div class="row">
 
+            <div id="app">
+                <article-update></article-update>
+            </div>
+
         @yield('content')
 
         @include('layout.sidebar')
