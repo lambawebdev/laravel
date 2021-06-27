@@ -20,7 +20,7 @@
 	},
 	"devMode": true,
 	"host": null,
-	"port": "6006",
+	"port": "6007",
 	"protocol": "http",
 	"socketio": {},
 	"secureOptions": 67108864,

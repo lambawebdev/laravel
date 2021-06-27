@@ -17,6 +17,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('articles', function ($user, $articleId) {
-    return true;
+Broadcast::channel('articles', function ($user) {
+    return $user::isAdmin();
 });
