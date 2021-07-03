@@ -15,6 +15,7 @@ use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use App\Events\ReportCreated;
 
 class AdminReport implements ShouldQueue
 {
@@ -69,5 +70,7 @@ class AdminReport implements ShouldQueue
         ];
 
         Mail::to($this->user->email)->send(new AdminReportCreated($reportData));
+
+
     }
 }

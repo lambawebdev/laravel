@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReportCreated;
 use App\Http\Requests\NewsFormRequest;
 use App\Http\Requests\TagsRequest;
 use App\Service\TagsSynchronizer;
@@ -90,6 +91,10 @@ class ContactsController extends Controller
     public function report(Request $request)
     {
         \App\Jobs\AdminReport::dispatch(Auth::user(), $request->all());
+
+        ReportCreated::dispatch($request->all());
+
+        return redirect()->back();
     }
 
 }

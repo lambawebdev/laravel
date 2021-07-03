@@ -67,6 +67,12 @@
             </div>
         </form>
 
+        <hr>
+
+        <div id="app">
+            <report-created></report-created>
+        </div>
+
 
         <hr>
         <a href="{{route("index")}}">Вернутся на главную</a>
