@@ -69,7 +69,7 @@
 
         <hr>
 
-        <div id="app">
+        <div id="report">
             <report-created></report-created>
         </div>
 

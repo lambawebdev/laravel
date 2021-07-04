@@ -29,7 +29,7 @@ class AdminReport implements ShouldQueue
     public $user;
     public $request;
 
-    public function __construct($user, $request)
+    public function __construct(object $user, $request)
     {
         $this->user = $user;
         $this->request = $request;
@@ -70,7 +70,5 @@ class AdminReport implements ShouldQueue
         ];
 
         Mail::to($this->user->email)->send(new AdminReportCreated($reportData));
-
-
     }
 }

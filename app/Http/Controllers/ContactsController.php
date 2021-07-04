@@ -90,11 +90,10 @@ class ContactsController extends Controller
 
     public function report(Request $request)
     {
+        ReportCreated::dispatch($request->all());
         \App\Jobs\AdminReport::dispatch(Auth::user(), $request->all());
 
-        ReportCreated::dispatch($request->all());
-
-        return redirect()->back();
+//        return redirect()->back();
     }
 
 }

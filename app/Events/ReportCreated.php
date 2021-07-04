@@ -14,7 +14,7 @@ class ReportCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $reportData = [];
+    public $reportData;
 
     /**
      * Create a new event instance.
