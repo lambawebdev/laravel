@@ -1,10 +1,10 @@
 <template>
-    <div class="report-created" v-if="hasUpdate">
-        <h3>Статья была обновлена</h3>
-<!--        <p v-html="'id ' + articleId"></p>-->
-<!--        <p v-html="'Заголовок статьи: ' + articleTitle" v-if="articleTitle != null"></p>-->
-<!--        <p v-html="'Содержание статьи: ' + articleBody" v-if="articleBody != null"></p>-->
-<!--        <a v-bind:href="'/articles/'+ articleId">Ссылка на статью</a>-->
+    <div class="report-created" v-if="reportCreated">
+        <h3>Отчет сформирован</h3>
+        <p v-html="'Новостей: ' + news" v-if="news != null"></p>
+        <p v-html="'Статей: ' + articles" v-if="articles != null"></p>
+        <p v-html="'Комментариев: ' + comments" v-if="comments != null"></p>
+        <p v-html="'Тегов: ' + tags" v-if="tags != null"></p>
     </div>
 </template>
 
@@ -13,20 +13,23 @@
 
       data() {
         return {
-          hasUpdate: false,
+          reportCreated: false,
+          news: null,
+          articles: null,
+          comments: null,
+          tags: null,
         }
       },
       mounted() {
-        Echo
-          .private('reports')
-          .listen('ReportCreated', (data) => {
-            this.hasUpdate = true;
-            alert(data);
-            console.log(data);
-            // this.articleId = data.article.id;
-            // this.articleTitle = data.changes.title ?? null;
-            // this.articleBody = data.changes.body ?? null;
-          });
+          Echo
+            .private('reports')
+            .listen('ReportCreated', (data) => {
+              this.reportCreated = true;
+              this.news = data.reportData.news ?? null;
+              this.articles = data.reportData.articles ?? null;
+              this.comments = data.reportData.comments ?? null;
+              this.tags = data.reportData.tags ?? null;
+            });
       },
       methods: {
         reload() {
@@ -41,7 +44,7 @@
         display: block;
         position: fixed;
         top: 50px;
-        left: 30px;
+        right: 30px;
         background-color: #aeb2a7;
         z-index: 5;
     }

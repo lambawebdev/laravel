@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Events\ReportCreated;
 use App\Http\Requests\NewsFormRequest;
 use App\Http\Requests\TagsRequest;
+use App\Models\Comment;
+use App\Models\Tag;
 use App\Service\TagsSynchronizer;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
@@ -90,10 +92,33 @@ class ContactsController extends Controller
 
     public function report(Request $request)
     {
-        ReportCreated::dispatch($request->all());
-        \App\Jobs\AdminReport::dispatch(Auth::user(), $request->all());
+        if (array_key_exists('news', $request->all())) {
+            $countNews = News::count();
+        }
 
-//        return redirect()->back();
+        if (array_key_exists('articles', $request->all())) {
+            $countArticles = Article::count();
+        }
+
+        if (array_key_exists('comments', $request->all())) {
+            $countComments = Comment::count();
+        }
+
+        if (array_key_exists('tags', $request->all())) {
+            $countTags = Tag::count();
+        }
+
+        $reportData = [
+            'articles' => $countArticles ?? null,
+            'news' => $countNews ?? null,
+            'comments' => $countComments ?? null,
+            'tags' => $countTags ?? null,
+            'request' => $request->all()
+        ];
+
+        if (count(array_keys($request->all())) > 1) {
+            ReportCreated::dispatch($reportData);
+            \App\Jobs\AdminReport::dispatch(Auth::user(), $reportData);
+        }
     }
-
 }

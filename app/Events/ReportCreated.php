@@ -2,6 +2,10 @@
 
 namespace App\Events;
 
+use App\Models\Article;
+use App\Models\Comment;
+use App\Models\News;
+use App\Models\Tag;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;

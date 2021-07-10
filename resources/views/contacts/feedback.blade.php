@@ -32,51 +32,34 @@
 
         <hr>
 
-
-
-        <form method="POST" action="{{ route("contacts.report") }}">
+        <form id="feedback-form">
 
             @csrf
 
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Выберите для отчета
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="news" id="Check1">
-                        <label class="form-check-label" for="Check1">Новости</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="articles" id="Check2">
-                        <label class="form-check-label" for="Check2">Статьи</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="comments" id="Check3">
-                        <label class="form-check-label" for="Check3">Комментарии</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="tags" id="Check4">
-                        <label class="form-check-label" for="Check4">Теги</label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Сформировать отчет</button>
-
-                </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="news" id="Check1">
+                <label class="form-check-label" for="Check1">Новости</label>
             </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="articles" id="Check2">
+                <label class="form-check-label" for="Check2">Статьи</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="comments" id="Check3">
+                <label class="form-check-label" for="Check3">Комментарии</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="tags" id="Check4">
+                <label class="form-check-label" for="Check4">Теги</label>
+            </div>
+            <button class="btn btn-primary">Сформировать отчет</button>
         </form>
-
         <hr>
-
         <div id="report">
             <report-created></report-created>
         </div>
-
-
         <hr>
         <a href="{{route("index")}}">Вернутся на главную</a>
-
     </div>
 
 @endsection
