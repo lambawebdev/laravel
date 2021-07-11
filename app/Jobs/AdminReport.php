@@ -3,19 +3,14 @@
 namespace App\Jobs;
 
 use App\Mail\AdminReportCreated;
-use App\Models\Comment;
-use App\Models\News;
-use App\Models\Tag;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Article;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
-use App\Events\ReportCreated;
+use App\Models\User;
+
 
 class AdminReport implements ShouldQueue
 {
@@ -29,7 +24,7 @@ class AdminReport implements ShouldQueue
     public object $user;
     public array $reportData;
 
-    public function __construct($user, array $reportData)
+    public function __construct(User $user, array $reportData)
     {
         $this->user = $user;
         $this->reportData = $reportData;

@@ -116,7 +116,7 @@ class ContactsController extends Controller
             'request' => $request->all()
         ];
 
-        if (count(array_keys($request->all())) > 1) {
+        if (count(array_keys($request->all())) > 0) {
             ReportCreated::dispatch($reportData);
             \App\Jobs\AdminReport::dispatch(Auth::user(), $reportData);
         }
