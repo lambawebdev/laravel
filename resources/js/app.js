@@ -34,8 +34,4 @@ const app = new Vue({
     el: '#app',
 });
 
-const report = new Vue({
-  el: '#report',
-});
-
 

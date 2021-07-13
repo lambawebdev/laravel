@@ -54,10 +54,7 @@
             </div>
             <button class="btn btn-primary">Сформировать отчет</button>
         </form>
-        <hr>
-        <div id="report">
-            <report-created></report-created>
-        </div>
+        <report-created></report-created>
         <hr>
         <a href="{{route("index")}}">Вернутся на главную</a>
     </div>

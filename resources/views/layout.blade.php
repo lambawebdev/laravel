@@ -30,12 +30,10 @@
 
 </div>
 
-    <main role="main" class="container">
+    <main role="main" id="app" class="container">
         <div class="row">
 
-            <div id="app">
                 <article-update></article-update>
-            </div>
 
         @yield('content')
 

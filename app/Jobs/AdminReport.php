@@ -21,7 +21,7 @@ class AdminReport implements ShouldQueue
      *
      * @return void
      */
-    public object $user;
+    public User $user;
     public array $reportData;
 
     public function __construct(User $user, array $reportData)
