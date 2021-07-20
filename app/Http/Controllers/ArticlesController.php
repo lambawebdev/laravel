@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Collection;
 use App\Service\TagsSynchronizer;
@@ -25,12 +26,13 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        /*$article = Article::where('owner_id', auth()->id())->with('tags')->latest()->get();*/
-        $articles = auth()->user()->articles()->with('tags')->where('published','1')->latest()->paginate(10);
+        $page = \request('page') ?? 1;
 
+        $articles = Cache::tags(['articles'])->remember('articles|user|' . auth()->id() . '|page|' . $page, 3600, function () {
+            return auth()->user()->articles()->with('tags')->where('published','1')->latest()->paginate(10);
+        });
 
         return view('articles.index', compact('articles'));
-
     }
 
     public function show(Article $article)

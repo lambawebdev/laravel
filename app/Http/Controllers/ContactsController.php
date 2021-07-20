@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Service\TagsSynchronizer;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use App\Models\Article;
 use App\Models\News;
@@ -47,16 +48,24 @@ class ContactsController extends Controller
         return view('contacts.feedback', compact('feedback'));
     }
 
-    public function articles(Article $article)
+    public function articles()
     {
-        $articles = $article->with('tags')->latest()->paginate(20);
+        $page = \request('page') ?? 1;
+
+        $articles = Cache::tags(['articles_admin'])->remember('articles|admin|page|' . $page, 3600, function () {
+            return Article::with('tags')->latest()->paginate(20);
+        });
 
         return view('articles.index', compact('articles'));
     }
 
-    public function news(News $news)
+    public function news()
     {
-        $news = $news->latest()->paginate(20);
+        $page = \request('page') ?? 1;
+
+        $news = Cache::tags(['news_admin'])->remember('news|admin|page|' . $page, 3600, function () {
+            return News::latest()->paginate(20);
+        });
 
         return view('news.index', compact('news'));
     }

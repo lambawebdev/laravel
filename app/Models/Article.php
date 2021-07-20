@@ -8,6 +8,7 @@ use App\Events\ArticleDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 
 class Article extends Model
@@ -21,6 +22,23 @@ class Article extends Model
         'updated' => ArticleModified::class,
         'deleted' => ArticleDeleted::class,
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::created(function($model){
+            Cache::tags(['articles', 'articles_admin', 'statistics'])->flush();
+        });
+
+        self::updated(function($model){
+            Cache::tags(['articles', 'articles_admin', 'statistics'])->flush();
+        });
+
+        self::deleted(function($model){
+            Cache::tags(['articles', 'articles_admin', 'statistics'])->flush();
+        });
+    }
 
     public static function completed()
     {
