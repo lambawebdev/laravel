@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use App\Service;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
+use function PHPUnit\TestFixture\func;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,8 +32,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('layout.sidebar', function ($view) {
-            $view->with('tagsCloud', \App\Models\Tag::tagsCloud());
+        $tagsCloud = Cache::tags('tags')->remember('tags', 3600, function() {
+            return \App\Models\Tag::tagsCloud();
+        });
+
+        View::composer('layout.sidebar', function ($view) use ($tagsCloud) {
+            $view->with('tagsCloud', $tagsCloud);
         });
 
         Blade::if('admin', function () {

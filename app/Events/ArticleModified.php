@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Article;
-use App\Models\ArticleHistory;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -12,11 +11,12 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ArticleModified
+class ArticleModified implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $article;
+    public $changes;
 
     /**
      * Create a new event instance.
@@ -26,6 +26,7 @@ class ArticleModified
     public function __construct(Article $article)
     {
         $this->article = $article;
+        $this->changes = $article->getDirty();
     }
 
     /**
@@ -35,6 +36,6 @@ class ArticleModified
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('articles');
     }
 }

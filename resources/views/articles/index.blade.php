@@ -13,7 +13,6 @@
             Список статей
         </h3>
 
-
     @foreach($articles as $article)
         @include('articles.item')
     @endforeach

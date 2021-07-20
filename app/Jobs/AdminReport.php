@@ -3,18 +3,14 @@
 namespace App\Jobs;
 
 use App\Mail\AdminReportCreated;
-use App\Models\Comment;
-use App\Models\News;
-use App\Models\Tag;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Article;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
+use App\Models\User;
+
 
 class AdminReport implements ShouldQueue
 {
@@ -25,13 +21,13 @@ class AdminReport implements ShouldQueue
      *
      * @return void
      */
-    public $user;
-    public $request;
+    public User $user;
+    public array $reportData;
 
-    public function __construct($user, $request)
+    public function __construct(User $user, array $reportData)
     {
         $this->user = $user;
-        $this->request = $request;
+        $this->reportData = $reportData;
     }
 
     /**
@@ -41,33 +37,6 @@ class AdminReport implements ShouldQueue
      */
     public function handle()
     {
-
-        $request = $this->request;
-
-        if (array_key_exists('news', $request)) {
-            $countNews = News::count();
-        }
-
-        if (array_key_exists('articles', $request)) {
-            $countArticles = Article::count();
-        }
-
-        if (array_key_exists('comments', $request)) {
-            $countComments = Comment::count();
-        }
-
-        if (array_key_exists('tags', $request)) {
-            $countTags = Tag::count();
-        }
-
-        $reportData = [
-            'articles' => $countArticles ?? '',
-            'news' => $countNews ?? '',
-            'comments' => $countComments ?? '',
-            'tags' => $countTags ?? '',
-            'request' => $request
-        ];
-
-        Mail::to($this->user->email)->send(new AdminReportCreated($reportData));
+        Mail::to($this->user->email)->send(new AdminReportCreated($this->reportData));
     }
 }

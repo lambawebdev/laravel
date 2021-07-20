@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Service\TagsSynchronizer;
 use Illuminate\Http\Request;
 use App\Models\News;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class NewsController extends Controller
@@ -17,9 +18,13 @@ class NewsController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(News $news)
+    public function index()
     {
-        $news = $news->latest()->paginate(10);
+        $page = \request('page') ?? 1;
+
+        $news = Cache::tags(['news'])->remember('news|page|' . $page, 3600, function () {
+            return News::latest()->paginate(10);
+        });
 
         return view('news.index', compact('news'));
     }
