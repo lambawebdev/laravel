@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CacheFlushTrait;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, CacheFlushTrait;
 
     protected $guarded = [];
+
+    static string $tag = 'news';
 
     public function tags()
     {
@@ -25,5 +28,4 @@ class News extends Model
     {
         $this->comments()->create($attributes);
     }
-
 }

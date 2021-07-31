@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title')</title>
 
@@ -15,6 +16,7 @@
 
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+
     <link href="/css/blog.css" rel="stylesheet">
 </head>
 
@@ -28,8 +30,10 @@
 
 </div>
 
-    <main role="main" class="container">
+    <main role="main" id="app" class="container">
         <div class="row">
+
+                <article-update></article-update>
 
         @yield('content')
 

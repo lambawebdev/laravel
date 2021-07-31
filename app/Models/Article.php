@@ -7,12 +7,12 @@ use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\CacheFlushTrait;
 
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory, CacheFlushTrait;
 
     protected $guarded = [];
 
@@ -21,6 +21,8 @@ class Article extends Model
         'updated' => ArticleModified::class,
         'deleted' => ArticleDeleted::class,
     ];
+
+    static string $tag = 'articles';
 
     public static function completed()
     {
