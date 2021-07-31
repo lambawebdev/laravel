@@ -4,30 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use App\Traits\CacheFlushTrait;
+
 
 class Tag extends Model
 {
     protected $guarded = [];
 
-    use HasFactory;
+    use HasFactory, CacheFlushTrait;
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::created(function($model){
-            Cache::tags(['tags'])->flush();
-        });
-
-        self::updated(function($model){
-            Cache::tags(['tags'])->flush();
-        });
-
-        self::deleted(function($model){
-            Cache::tags(['tags'])->flush();
-        });
-    }
+    static string $tag = 'tags';
 
     public function articles()
     {

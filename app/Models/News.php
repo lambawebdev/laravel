@@ -4,30 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use App\Traits\CacheFlushTrait;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, CacheFlushTrait;
 
     protected $guarded = [];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::created(function($model){
-            Cache::tags(['news', 'news_admin', 'statistics'])->flush();
-        });
-
-        self::updated(function($model){
-            Cache::tags(['news', 'news_admin', 'statistics'])->flush();
-        });
-
-        self::deleted(function($model){
-            Cache::tags(['news', 'news_admin', 'statistics'])->flush();
-        });
-    }
+    static string $tag = 'news';
 
     public function tags()
     {
@@ -43,5 +28,4 @@ class News extends Model
     {
         $this->comments()->create($attributes);
     }
-
 }

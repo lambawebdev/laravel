@@ -28,7 +28,7 @@ class ArticlesController extends Controller
     {
         $page = \request('page') ?? 1;
 
-        $articles = Cache::tags(['articles'])->remember('articles|user|' . auth()->id() . '|page|' . $page, 3600, function () {
+        $articles = Cache::tags(['articles', 'tags'])->remember('articles|user|' . auth()->id() . '|page|' . $page, 3600, function () {
             return auth()->user()->articles()->with('tags')->where('published','1')->latest()->paginate(10);
         });
 

@@ -52,7 +52,7 @@ class ContactsController extends Controller
     {
         $page = \request('page') ?? 1;
 
-        $articles = Cache::tags(['articles_admin'])->remember('articles|admin|page|' . $page, 3600, function () {
+        $articles = Cache::tags(['articles', 'tags'])->remember('articles|admin|page|' . $page, 3600, function () {
             return Article::with('tags')->latest()->paginate(20);
         });
 
@@ -63,7 +63,7 @@ class ContactsController extends Controller
     {
         $page = \request('page') ?? 1;
 
-        $news = Cache::tags(['news_admin'])->remember('news|admin|page|' . $page, 3600, function () {
+        $news = Cache::tags(['news'])->remember('news|admin|page|' . $page, 3600, function () {
             return News::latest()->paginate(20);
         });
 

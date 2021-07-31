@@ -14,7 +14,7 @@ class StatisticsController extends Controller
     public function index()
     {
 
-        $statisticData = Cache::tags(['statistics'])->remember('statistics', 3600, function () {
+        $statisticData = Cache::tags(['articles', 'news', 'tags'])->remember('statistics', 3600, function () {
             $countArticles = Article::count();
             $countNews = News::count();
             $mostArticlesHasUser = User::withCount('articles')->orderBy('articles_count', 'desc')->first();

@@ -7,13 +7,12 @@ use App\Events\ArticleModified;
 use App\Events\ArticleDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use App\Traits\CacheFlushTrait;
 
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory, CacheFlushTrait;
 
     protected $guarded = [];
 
@@ -23,22 +22,7 @@ class Article extends Model
         'deleted' => ArticleDeleted::class,
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::created(function($model){
-            Cache::tags(['articles', 'articles_admin', 'statistics'])->flush();
-        });
-
-        self::updated(function($model){
-            Cache::tags(['articles', 'articles_admin', 'statistics'])->flush();
-        });
-
-        self::deleted(function($model){
-            Cache::tags(['articles', 'articles_admin', 'statistics'])->flush();
-        });
-    }
+    static string $tag = 'articles';
 
     public static function completed()
     {
